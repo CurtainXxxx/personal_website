@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>费枭健 - 个人网站</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    
+    <!-- 自定义 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',  // 主色调：蓝色（代表专业、信任）
+                        secondary: '#26a69a', // 辅助色：青色（代表活力、创新）
+                        accent: '#FF7D00',    // 强调色：橙色（用于突出关键元素）
+                        dark: '#333333',      // 深色文本
+                        light: '#F5F7FA',     // 浅色背景
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02)',
+                        'card-hover': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                    }
+                },
+            }
+        }
+    </script>
+    
+    <!-- 自定义工具类 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .animate-float {
+                animation: float 6s ease-in-out infinite;
+            }
+            .animate-pulse-slow {
+                animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+            .timeline-line {
+                @apply absolute left-0 top-0 h-full w-0.5 bg-secondary;
+            }
+            .timeline-dot {
+                @apply absolute left-0 top-0 w-4 h-4 bg-secondary rounded-full -ml-2;
+            }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+    
+    <style>
+        /* 全局样式 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #165DFF;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0E48CC;
+        }
+    </style>
+</head>
+<body class="font-inter bg-light text-dark antialiased">
+    <!-- 导航栏 -->
+    <nav id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-md shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-primary flex items-center">
+                <span class="mr-2">费枭健</span>
+                <span class="text-xs font-normal bg-secondary text-white px-2 py-0.5 rounded">个人网站</span>
+            </a>
+            
+            <!-- 桌面导航 -->
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="text-dark hover:text-primary transition-colors font-medium">自我介绍</a>
+                <a href="#university" class="text-dark hover:text-primary transition-colors font-medium">我的大学</a>
+                <a href="#courses" class="text-dark hover:text-primary transition-colors font-medium">专业课程</a>
+                <a href="#activities" class="text-dark hover:text-primary transition-colors font-medium">校园活动</a>
+                <a href="#awards" class="text-dark hover:text-primary transition-colors font-medium">获奖荣誉</a>
+            </div>
+            
+            <!-- 移动端菜单按钮 -->
+            <button id="menu-toggle" class="md:hidden text-primary focus:outline-none">
+                <i class="fa fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- 移动端导航菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
+                <a href="#about" class="text-dark hover:text-primary transition-colors font-medium py-2">自我介绍</a>
+                <a href="#university" class="text-dark hover:text-primary transition-colors font-medium py-2">我的大学</a>
+                <a href="#courses" class="text-dark hover:text-primary transition-colors font-medium py-2">专业课程</a>
+                <a href="#activities" class="text-dark hover:text-primary transition-colors font-medium py-2">校园活动</a>
+                <a href="#awards" class="text-dark hover:text-primary transition-colors font-medium py-2">获奖荣誉</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <section class="relative pt-28 pb-20 md:pt-40 md:pb-32 overflow-hidden bg-gradient-to-br from-primary/5 to-secondary/5">
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden">
+            <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-20 -left-20 w-60 h-60 bg-secondary/10 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold leading-tight text-dark mb-6">
+                        你好，我是 <span class="text-primary">费枭健</span>
+                    </h1>
+                    <p class="text-[clamp(1rem,2vw,1.25rem)] text-gray-600 mb-8 max-w-xl">
+                        岭南师范学院2024级软件工程（网络安全）创新班新生，专注于网络安全与软件工程，热爱编程与探索新技术。
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#about" class="px-8 py-3 bg-primary hover:bg-primary/90 text-white rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5">
+                            了解更多
+                        </a>
+                        <a href="#contact" class="px-8 py-3 bg-white hover:bg-gray-50 text-primary border border-primary rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">
+                            联系我
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative">
+                        <div class="w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-br from-primary to-secondary animate-float overflow-hidden border-4 border-white shadow-xl">
+                            <img src="1.jpg.jpg" alt="费枭健" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-5 -right-5 bg-white p-4 rounded-lg shadow-lg">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fa fa-code text-primary text-xl"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-gray-500">当前专注</div>
+                                    <div class="font-bold">网络安全</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 自我介绍 -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-dark mb-4">自我介绍</h2>
+                <div class="w-20 h-1 bg-primary mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="bg-white rounded-xl shadow-card p-8 transform transition-all duration-300 hover:shadow-card-hover">
+                        <p class="text-lg leading-relaxed mb-6">
+                            我是费枭健，目前就读于岭南师范学院软件工程（网络安全）创新班。作为一名大一新生，我正积极探索计算机科学领域，尤其专注于网络安全方向。
+                        </p>
+                        <p class="text-lg leading-relaxed mb-6">
+                            我具备扎实的编程基础，熟练掌握Python和C，并正在学习Web开发技术。我热衷于解决复杂问题，具有良好的团队协作能力和强烈的学习意愿。
+                        </p>
+                        <p class="text-lg leading-relaxed">
+                            在课余时间，我喜欢参加校园活动，如游泳比赛和篮球比赛，这些活动不仅锻炼了我的身体素质，也培养了我的竞争意识和团队精神。
+                        </p>
+                        
+                        <div class="mt-10">
+                            <h3 class="text-xl font-bold mb-4">个人技能</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fa fa-code text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium">编程语言</div>
+                                        <div class="text-sm text-gray-500">Python, C, JavaScript</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fa fa-shield text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium">网络安全</div>
+                                        <div class="text-sm text-gray-500">Web安全, 渗透测试</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fa fa-laptop text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium">开发工具</div>
+                                        <div class="text-sm text-gray-500">VS Code, vs 2022, pycharm</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fa fa-database text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium">办公软件及流程图工具</div>
+                                        <div class="text-sm text-gray-500">word,ppt,excel,xmind</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-span-1">
+                    <div class="bg-white rounded-xl shadow-card p-8 transform transition-all duration-300 hover:shadow-card-hover">
+                        <h3 class="text-xl font-bold mb-6 flex items-center">
+                            <i class="fa fa-user-circle text-primary mr-2"></i> 基本信息
+                        </h3>
+                        <ul class="space-y-4">
+                            <li class="flex justify-between items-center pb-2 border-b border-gray-100">
+                                <span class="text-gray-600">姓名</span>
+                                <span class="font-medium">费枭健</span>
+                            </li>
+                            <li class="flex justify-between items-center pb-2 border-b border-gray-100">
+                                <span class="text-gray-600">学校</span>
+                                <span class="font-medium">岭南师范学院</span>
+                            </li>
+                            <li class="flex justify-between items-center pb-2 border-b border-gray-100">
+                                <span class="text-gray-600">专业</span>
+                                <span class="font-medium">软件工程（网络安全）</span>
+                            </li>
+                            <li class="flex justify-between items-center pb-2 border-b border-gray-100">
+                                <span class="text-gray-600">年级</span>
+                                <span class="font-medium">大一</span>
+                            </li>
+                            <li class="flex justify-between items-center pb-2 border-b border-gray-100">
+                                <span class="text-gray-600">邮箱</span>
+                                <span class="font-medium">18617346516@163.com</span>
+                            </li>
+                            <li class="flex justify-between items-center">
+                                <span class="text-gray-600">GitHub</span>
+                                <span class="font-medium"><a href="#" class="text-primary hover:underline">github.com/CurtainXxxx</a></span>
+                            </li>
+                        </ul>
+                        
+                        <div class="mt-8">
+                            <h3 class="text-xl font-bold mb-4 flex items-center">
+                                <i class="fa fa-trophy text-primary mr-2"></i> 个人优势
+                            </h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium">学习能力</span>
+                                        <span class="text-sm font-medium">90%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-primary h-2 rounded-full" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium">问题解决</span>
+                                        <span class="text-sm font-medium">85%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-primary h-2 rounded-full" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium">团队协作</span>
+                                        <span class="text-sm font-medium">88%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div class="bg-primary h-2 rounded-full" style="width: 88%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 我的大学 -->
+    <section id="university" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-dark mb-4">我的大学</h2>
+                <div class="w-20 h-1 bg-primary mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div>
+                    <div class="bg-white rounded-xl shadow-card overflow-hidden transform transition-all duration-300 hover:shadow-card-hover">
+                        <img src="schoollogo.jpg" alt="岭南师范学院校徽" class="w-full h-64 object-cover">
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold mb-4">岭南师范学院</h3>
+                            <p class="text-gray-600 mb-4">
+                                创办于1904年，广东省属本科师范院校，计算机与智能教育学院为学校重点建设学院。校园占地2000余亩，拥有省级重点实验室3个，图书馆藏书280万册。
+                            </p>
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <div class="text-3xl font-bold text-primary mb-1">70+</div>
+                                    <div class="text-gray-600">本科专业</div>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <div class="text-3xl font-bold text-primary mb-1">30k+</div>
+                                    <div class="text-gray-600">在校学生</div>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <div class="text-3xl font-bold text-primary mb-1">2k+</div>
+                                    <div class="text-gray-600">教职员工</div>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <div class="text-3xl font-bold text-primary mb-1">1000+</div>
+                                    <div class="text-gray-600">近五年科研项目</div>
+                                </div>
+                            </div>
+                            <h4 class="font-bold mb-3">学校特色</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                                    <span>广东省高水平大学建设高校</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                                    <span>拥有国家级特色专业2个，省级特色专业14个</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                                    <span>建有省级重点实验室3个，国家级实验教学示范中心1个</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                                    <span>与国内外多所高校建立了合作交流关系</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="bg-white rounded-xl shadow-card overflow-hidden transform transition-all duration-300 hover:shadow-card-hover">
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold mb-6">计算机与智能教育学院</h3>
+                            
+                            <div class="mb-8">
+                                <div class="relative pl-8 pb-6 border-l-2 border-primary">
+                                    <div class="absolute left-0 top-0 w-4 h-4 bg-primary rounded-full -ml-3"></div>
+                                    <div class="font-bold mb-1">学院起源与发展</div>
+                                    <p class="text-gray-600">
+                                        计算机与智能教育学院的办学历史源于1990年物理系计算机应用专业，2006年成立信息科学与技术学院，2012年批准建立广东省级示范性软件学院（东软睿道软件学院），2016年更名为信息工程学院，2021年7月由原信息工程学院的计算机系（公共计算机部）、软件工程系和教师教育学院的教育技术系组建而成，计算机与智能教育学院与东软睿道软件学院合署。学院坚持“新工科”“新师范”融合创新发展办学思路，培养广东特别是粤西地区信息化产业发展需要的高素质应用型人才。
+                                    </p>
+                                </div>
+                                <div class="relative pl-8 pb-6 border-l-2 border-primary">
+                                    <div class="absolute left-0 top-0 w-4 h-4 bg-primary rounded-full -ml-3"></div>
+                                    <div class="font-bold mb-1">学院师资与学科实力</div>
+                                    <p class="text-gray-600">
+                                        学院现有专任教师90人，其中正高级职称8人，副高级职称20人，中级职称46人；博士23人，教授9人；博导1人，硕导10人；南粤优秀教师1人，岭南师范学院教学名师1人；广东省扬帆计划9人，雷阳学者首席教授1人。学院下设计算机科学与技术系、软件工程系、大数据与人工智能系、教育技术系和公共教学部、实验中心，现有计算机科学与技术、教育技术学、软件工程、数据科学与大数据技术、人工智能等5个本科专业。其中计算机科学与技术专业通过IEET国际工程教育认证，计算机科学与技术和教育技术学专业为省一流专业建设点，软件工程专业为软件学院校企联合办学专业。学院建成广东高校数字化学习工程技术中心、广东省大学生校外实践基地（岭南师范学院-东软人才实训基地）、广东省计算机实验教学示范中心，以及40多个校外实习实训基地。
+                                    </p>
+                                </div>
+                                <div class="relative pl-8 border-l-2 border-primary">
+                                    <div class="absolute left-0 top-0 w-4 h-4 bg-primary rounded-full -ml-3"></div>
+                                    <div class="font-bold mb-1">学院科研成果</div>
+                                    <p class="text-gray-600">
+                                        学院教学科研成果显著。学院获得广东省教学成果奖一等奖2项，建成广东省一流课程3门，广东省教学团队2个，教育部产学合作协同育人项目10余项、广东省专业综合改革项目2项、获得省级以上教学研究项目30余项，出版规划教材10余部。获得省级科技进步奖二等奖1项，广东省轻工业协会科技进步奖三等奖1项；承担国家自然科学基金项目、国家社科项目、教育部人文社科项目、省级科研项目等50余项，获授权发明专利、实用新型专利、软件著作权300余项，三大检索收录论文100余篇。
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <h4 class="font-bold mb-4">专业课程设置</h4>
+                            <div class="grid grid-cols-2 gap-3 mb-6">
+                                <div class="bg-gray-50 p-3 rounded-lg flex items-center">
+                                    <i class="fa fa-code text-primary mr-2"></i>
+                                    <span>数据结构与算法</span>
+                                </div>
+                                <div class="bg-gray-50 p-3 rounded-lg flex items-center">
+                                    <i class="fa fa-server text-primary mr-2"></i>
+                                    <span>计算机网络</span>
+                                </div>
+                                <div class="bg-gray-50 p-3 rounded-lg flex items-center">
+                                    <i class="fa fa-shield text-primary mr-2"></i>
+                                    <span>网络安全基础</span>
+                                </div>
+                                <div class="bg-gray-50 p-3 rounded-lg flex items-center">
+                                    <i class="fa fa-lock text-primary mr-2"></i>
+                                    <span>密码学</span>
+                                </div>
+                                <div class="bg-gray-50 p-3 rounded-lg flex items-center">
+                                    <i class="fa fa-database text-primary mr-2"></i>
+                                    <span>数据库系统</span>
+                                </div>
+                                <div class="bg-gray-50 p-3 rounded-lg flex items-center">
+                                    <i class="fa fa-bug text-primary mr-2"></i>
+                                    <span>Web安全与渗透测试</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-8">
+                                <h4 class="font-bold mb-4">校园生活</h4>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <img src="campus1.jpg" alt="校园风景" class="rounded-lg shadow-md transform transition-all duration-300 hover:scale-105">
+                                    <img src="lab.jpg" alt="实验室" class="rounded-lg shadow-md transform transition-all duration-300 hover:scale-105">
+                                    <img src="library.jpg" alt="图书馆" class="rounded-lg shadow-md transform transition-all duration-300 hover:scale-105">
+                                    <img src="dormitory.jpg" alt="宿舍" class="rounded-lg shadow-md transform transition-all duration-300 hover:scale-105">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 专业课程 -->
+    <section id="courses" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-dark mb-4">专业课程</h2>
+                <div class="w-20 h-1 bg-primary mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 课程卡片1 -->
+                <div class="bg-white rounded-xl shadow-card overflow-hidden transform transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1">
+                    <div class="h-48 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-code text-6xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold">数据结构与算法</h3>
+                            <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">核心课程</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            掌握链表、栈、队列、树、图等数据结构，学习排序、查找、图算法等经典算法设计与分析方法。
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fa fa-star text-yellow-400 mr-1"></i>
+                                <span class="text-sm font-medium">4.8/5.0</span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <i class="fa fa-clock-o mr-1"></i> 64课时
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 课程卡片2 -->
+                <div class="bg-white rounded-xl shadow-card overflow-hidden transform transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1">
+                    <div class="h-48 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-server text-6xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold">计算机网络</h3>
+                            <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">核心课程</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            学习计算机网络体系结构、TCP/IP协议栈、网络层、传输层和应用层协议，掌握网络编程技术。
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fa fa-star text-yellow-400 mr-1"></i>
+                                <span class="text-sm font-medium">4.7/5.0</span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <i class="fa fa-clock-o mr-1"></i> 64课时
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 课程卡片3 -->
+                <div class="bg-white rounded-xl shadow-card overflow-hidden transform transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1">
+                    <div class="h-48 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-shield text-6xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold">网络安全基础</h3>
+                            <span class="px-3 py-1 bg-secondary/10 text-secondary text-sm rounded-full">专业方向</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            系统学习网络安全基本概念、攻击与防御技术、安全协议、访问控制、防火墙、入侵检测等技术。
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fa fa-star text-yellow-400 mr-1"></i>
+                                <span class="text-sm font-medium">4.9/5.0</span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <i class="fa fa-clock-o mr-1"></i> 48课时
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 课程卡片4 -->
+                <div class="bg-white rounded-xl shadow-card overflow-hidden transform transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1">
+                    <div class="h-48 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-lock text-6xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold">密码学</h3>
+                            <span class="px-3 py-1 bg-secondary/10 text-secondary text-sm rounded-full">专业方向</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            学习密码学基本原理、对称加密、非对称加密、哈希函数、数字签名、密钥管理等技术及其应用。
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fa fa-star text-yellow-400 mr-1"></i>
+                                <span class="text-sm font-medium">4.6/5.0</span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <i class="fa fa-clock-o mr-1"></i> 48课时
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 课程卡片5 -->
+                <div class="bg-white rounded-xl shadow-card overflow-hidden transform transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1">
+                    <div class="h-48 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-database text-6xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold">数据库系统</h3>
+                            <span class="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">核心课程</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            学习关系数据库设计与实现、SQL语言、查询优化、事务处理、数据库安全与恢复等技术。
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fa fa-star text-yellow-400 mr-1"></i>
+                                <span class="text-sm font-medium">4.7/5.0</span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <i class="fa fa-clock-o mr-1"></i> 64课时
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 课程卡片6 -->
+                <div class="bg-white rounded-xl shadow-card overflow-hidden transform transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1">
+                    <div class="h-48 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-bug text-6xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-3">
+                            <h3 class="text-xl font-bold">Web安全与渗透测试</h3>
+                            <span class="px-3 py-1 bg-secondary/10 text-secondary text-sm rounded-full">专业方向</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">
+                            学习Web应用安全漏洞（如SQL注入、XSS、CSRF等）的原理、检测与防范技术，掌握渗透测试方法。
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fa fa-star text-yellow-400 mr-1"></i>
+                                <span class="text-sm font-medium">4.9/5.0</span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                <i class="fa fa-clock-o mr-1"></i> 48课时
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <div class="inline-block bg-gray-50 p-4 rounded-xl shadow-sm">
+                    <div class="flex items-center">
+                        <div class="mr-4">
+                            <div class="text-4xl font-bold text-primary">12+</div>
+                            <div class="text-gray-600 text-sm">专业课程</div>
+                        </div>
+                        <div class="h-10 w-px bg-gray-200 mx-2"></div>
+                        <div class="mr-4">
+                            <div class="text-4xl font-bold text-primary">2</div>
+                            <div class="text-gray-600 text-sm">专业方向</div>
+                        </div>
+                        <div class="h-10 w-px bg-gray-200 mx-2"></div>
+                        <div>
+                            <div class="text-4xl font-bold text-primary">8</div>
+                            <div class="text-gray-600 text-sm">实践课程</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 校园活动 -->
+    <section id="activities" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-dark mb-4">校园活动</h2>
+                <div class="w-20 h-1 bg-primary mx-auto"></div>
+            </div>
+            
+            <div class="relative">
+                <!-- 时间线 -->
+                <div class="absolute left-0 md:left-1/2 top-0 bottom-0 w-0.5 bg-primary/30 transform md:-translate-x-1/2"></div>
+                
+                <!-- 活动1 -->
+                <div class="relative mb-16">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-8 md:mb-0">
+                            <div class="bg-white p-6 rounded-xl shadow-card transform transition-all duration-300 hover:shadow-card-hover">
+                                <div class="text-2xl font-bold text-primary mb-2">校游泳比赛</div>
+                                <div class="text-gray-600 mb-3">2024年10月 | 岭南师范学院游泳馆</div>
+                                <p class="text-gray-600">
+                                    代表计智院参加校游泳比赛，参与自由泳接力和蛙泳接力两个项目，分别获得第三名和第二名的成绩。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="absolute left-0 md:left-1/2 top-1/2 w-8 h-8 bg-primary rounded-full transform -translate-y-1/2 md:-translate-x-1/2 flex items-center justify-center shadow-lg">
+                            <i class="fa fa-trophy text-white"></i>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 hidden md:block">
+                            <img src="swimming.jpg" alt="校游泳比赛" class="rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 活动2 -->
+                <div class="relative mb-16">
+                    <div class="flex flex-col md:flex-row-reverse items-center">
+                        <div class="md:w-1/2 md:pl-12 md:text-left mb-8 md:mb-0">
+                            <div class="bg-white p-6 rounded-xl shadow-card transform transition-all duration-300 hover:shadow-card-hover">
+                                <div class="text-2xl font-bold text-primary mb-2">院篮球赛</div>
+                                <div class="text-gray-600 mb-3">2025年4月 | 岭南师范学院体育场</div>
+                                <p class="text-gray-600">
+                                    作为班级篮球队成员，参加院级篮球赛，在比赛中表现出色帮助团队成功小组出线。
+                                </p>
+                            </div>
+                        </div>
+                        <div class="absolute left-0 md:left-1/2 top-1/2 w-8 h-8 bg-primary rounded-full transform -translate-y-1/2 md:-translate-x-1/2 flex items-center justify-center shadow-lg">
+                            <i class="fa fa-basketball-ball text-white"></i>
+                        </div>
+                        <div class="md:w-1/2 md:pr-12 hidden md:block">
+                            <img src="basketball.jpg" alt="院篮球赛" class="rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 活动3 -->
+                <div class="relative">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-8 md:mb-0">
+                            <div class="bg-white p-6 rounded-xl shadow-card transform transition-all duration-300 hover:shadow-card-hover">
+                                <div class="text-2xl font-bold text-primary mb-2">青马工程</div>
+                                <div class="text-gray-600 mb-3">2024年12月 | 岭南师范学院学术报告厅</div>
+                                
+                            </div>
+                        </div>
+                        <div class="absolute left-0 md:left-1/2 top-1/2 w-8 h-8 bg-primary rounded-full transform -translate-y-1/2 md:-translate-x-1/2 flex items-center justify-center shadow-lg">
+                            <i class="fa fa-lightbulb-o text-white"></i>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 hidden md:block">
+                            <img src="qingma.jpg" alt="青马工程" class="rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 获奖荣誉 -->
+    <section id="awards" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-[clamp(1.75rem,3vw,2.5rem)] font-bold text-dark mb-4">获奖荣誉</h2>
+                <div class="w-20 h-1 bg-primary mx-auto"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 荣誉卡片1 -->
+                <div class="bg-white rounded-xl shadow-card overflow-hidden transform transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1">
+                    <div class="h-32 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-trophy text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">2025年校游泳比赛二等奖</h3>
+                        <p class="text-gray-600">代表计智院参加校游泳比赛，蛙泳接力项目荣获二等奖。</p>
+                    </div>
+                </div>
+                <!-- 荣誉卡片2 -->
+                <div class="bg-white rounded-xl shadow-card overflow-hidden transform transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1">
+                    <div class="h-32 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-certificate text-5xl text-secondary"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">2025年校游泳比赛三等奖</h3>
+                        <p class="text-gray-600">自由泳接力项目荣获三等奖，展现团队协作精神。</p>
+                    </div>
+                </div>
+                <!-- 荣誉卡片3 -->
+                <div class="bg-white rounded-xl shadow-card overflow-hidden transform transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1">
+                    <div class="h-32 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-users text-5xl text-accent"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">普通话二级乙等证书</h3>
+                        <p class="text-gray-600">2024年考取普通话二级乙等证书</p>
+                    </div>
+                </div>
+                <!-- 荣誉卡片4 -->
+                <div class="bg-white rounded-xl shadow-card overflow-hidden transform transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1">
+                    <div class="h-32 bg-primary/10 flex items-center justify-center">
+                        <i class="fa fa-lightbulb-o text-5xl text-primary"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">2024年青马工程结业证书</h3>
+                        <p class="text-gray-600">顺利完成青马工程培训，获得结业证书。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
